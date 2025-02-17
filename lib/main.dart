@@ -3,7 +3,7 @@ import 'package:charity_circle/features/intro/splash_screen.dart';
 import 'package:charity_circle/routes/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:charity_circle/firebase/firebase_options.dart';
+import 'package:charity_circle/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 
