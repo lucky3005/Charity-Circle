@@ -50,5 +50,4 @@ firebase.json
 */firebase_options.dart
 
 # Ignore Firebase config files
-**/google-services.json
-**/GoogleService-Info.plist
+android/app/google-services.json
