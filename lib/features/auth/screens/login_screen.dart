@@ -5,7 +5,9 @@ import 'package:charity_circle/core/colors.dart';
 import 'package:charity_circle/features/auth/screens/forget_password_screen.dart';
 import 'package:charity_circle/features/auth/screens/signup_screen.dart';
 import 'package:charity_circle/features/auth/services/auth_services.dart';
+import 'package:charity_circle/features/charity/screen/home_screen.dart';
 import 'package:charity_circle/features/volunteer/widgets/bottom_nav_bar.dart';
+import 'package:charity_circle/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,22 +40,61 @@ class _LoginScreenState extends State<LoginScreen> {
     required String email,
     required String password,
   }) async {
-    setState(() {
-      isLoading = true;
-    });
+    try {
+      setState(() {
+        isLoading = true;
+      });
 
-    AuthServices authServices = AuthServices();
-    User? user = await authServices.signIn(
-      context: context,
-      email: email,
-      password: password,
-    );
-    setState(() {
-      isLoading = false;
-    });
-    if (user!.email == email) {
-      FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-      
+      AuthServices authServices = AuthServices();
+      User? user = await authServices.signIn(
+        context: context,
+        email: email,
+        password: password,
+      );
+      if (user == null) {
+        setState(() => isLoading = false);
+        return;
+      }
+
+      if (user.email == email) {
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+        DocumentSnapshot<Map<String, dynamic>> snapshot =
+            await firebaseFirestore.collection("Users").doc(user.uid).get();
+
+        if (snapshot["type"] == "volunteer") {
+          Utils.showSnackBar(
+            context: context,
+            content: "Login Successfully",
+            color: AppColors.successColor,
+          );
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            BottomNavBar.routeName,
+            (route) => false,
+          );
+        }
+        if (snapshot["type"] == "charity") {
+          Utils.showSnackBar(
+            context: context,
+            content: "Login Successfully",
+            color: AppColors.successColor,
+          );
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            CharityHomeScreen.routeName,
+            (route) => false,
+          );
+        }
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      Utils.showSnackBar(
+        context: context,
+        content: e.toString(),
+        color: AppColors.warningColor,
+      );
     }
   }
 

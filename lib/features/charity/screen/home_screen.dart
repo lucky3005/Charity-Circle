@@ -1,18 +1,23 @@
+import 'package:charity_circle/features/volunteer/screens/user_screen.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class CharityHomeScreen extends StatefulWidget {
+  static const String routeName = "/charity-home-screen";
+  const CharityHomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<CharityHomeScreen> createState() => _CharityHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _CharityHomeScreenState extends State<CharityHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Charity"),
+      ),
+      drawer: Drawer(
+        child: UserScreen(),
       ),
     );
   }

@@ -3,16 +3,23 @@ import 'package:charity_circle/core/images.dart';
 import 'package:flutter/material.dart';
 
 class CustomCircularAvatar extends StatelessWidget {
-  const CustomCircularAvatar({super.key});
+  final String imageUrl;
+  const CustomCircularAvatar({
+    super.key,
+    required this.imageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundColor: AppColors.splashBackground,
-      radius: 60,
-      child: Image.asset(
-        AppImages.manProfile,
-        fit: BoxFit.fill,
+    return SizedBox(
+      width: double.infinity,
+      child: CircleAvatar(
+        backgroundColor: AppColors.splashBackground,
+        radius: 60,
+        child: Image.asset(
+          imageUrl,
+          fit: BoxFit.fill,
+        ),
       ),
     );
   }

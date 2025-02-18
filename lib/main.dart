@@ -5,31 +5,55 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:charity_circle/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-
-void main()async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
+  );
+
+  // Load saved theme preference
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  bool val = pref.getBool("theme_mode") ?? false;
+
+  // Initialize AppTheme with saved preference
+  final appTheme = AppTheme();
+  await appTheme.loadThemeMode(val);
+
+  // Lock orientation to portrait mode
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp, // Lock to portrait mode
+    DeviceOrientation.portraitUp,
   ]).then((_) {
-    runApp(const CharityCircle());
+    runApp(CharityCircle(appTheme: appTheme));
   });
 }
 
 class CharityCircle extends StatelessWidget {
-  const CharityCircle({super.key});
+  final AppTheme appTheme;
+
+  const CharityCircle({super.key, required this.appTheme});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Charity Circle',
-      theme: AppTheme.appTheme,
-      initialRoute: SplashScreen.routeName,
-      onGenerateRoute: (settings) => onGenerateRoute(settings),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: appTheme, // Use the pre-initialized theme instance
+        ),
+      ],
+      child: Consumer<AppTheme>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Charity Circle',
+            theme: themeProvider.themeData, // Apply the correct theme
+            initialRoute: SplashScreen.routeName,
+            onGenerateRoute: (settings) => onGenerateRoute(settings),
+          );
+        },
+      ),
     );
   }
 }

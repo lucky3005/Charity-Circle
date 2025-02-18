@@ -3,8 +3,8 @@ import 'package:charity_circle/components/elevated_button_custom.dart';
 import 'package:charity_circle/components/text_form_field_custom.dart';
 import 'package:charity_circle/core/colors.dart';
 import 'package:charity_circle/features/auth/services/auth_services.dart';
-import 'package:charity_circle/features/volunteer/screens/home_screen.dart';
 import 'package:charity_circle/features/volunteer/widgets/bottom_nav_bar.dart';
+import 'package:charity_circle/features/charity/screen/home_screen.dart';
 import 'package:charity_circle/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -61,17 +61,29 @@ class _SignupScreenState extends State<SignupScreen> {
       type: type,
     );
 
+    if (user == null) {
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+
+    if (user.email == email) {
+      type == "volunteer"
+          ? Navigator.pushNamedAndRemoveUntil(
+              context,
+              BottomNavBar.routeName,
+              (route) => false,
+            )
+          : Navigator.pushNamedAndRemoveUntil(
+              context,
+              CharityHomeScreen.routeName,
+              (route) => false,
+            );
+    }
     setState(() {
       isLoading = false;
     });
-
-    if (user!.email == email) {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        BottomNavBar.routeName,
-        (route) => false,
-      );
-    }
   }
 
   @override

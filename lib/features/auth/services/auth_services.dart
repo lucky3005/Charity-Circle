@@ -1,4 +1,6 @@
-import 'package:charity_circle/features/auth/models/auth_model.dart';
+import 'package:charity_circle/core/colors.dart';
+import 'package:charity_circle/models/auth_model.dart';
+import 'package:charity_circle/features/auth/screens/login_screen.dart';
 import 'package:charity_circle/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,7 +25,6 @@ class AuthServices {
         email: email,
         password: password,
       );
-
       User? user = userCredential.user;
       if (user == null) return null;
 
@@ -38,25 +39,28 @@ class AuthServices {
         Utils.showSnackBar(
           context: context,
           content: "User Created Successfully!",
+          color: AppColors.successColor,
         );
 
         return user;
       } catch (firestoreError) {
         Utils.showSnackBar(
-          context: context,
-          content: "Failed to store user data: ${firestoreError.toString()}",
-        );
+            context: context,
+            content: "Failed to store user data: ${firestoreError.toString()}",
+            color: AppColors.warningColor);
         return null;
       }
     } on FirebaseAuthException catch (e) {
       Utils.showSnackBar(
         context: context,
         content: e.message ?? "Authentication failed",
+        color: AppColors.warningColor,
       );
     } catch (e) {
       Utils.showSnackBar(
         context: context,
         content: "An unexpected error occurred: ${e.toString()}",
+        color: AppColors.warningColor,
       );
     }
     return null;
@@ -78,20 +82,18 @@ class AuthServices {
       User? user = userCredential.user;
       if (user == null) return null;
 
-      Utils.showSnackBar(
-        context: context,
-        content: "Login Successfully",
-      );
       return user;
     } on FirebaseAuthException catch (e) {
       Utils.showSnackBar(
         context: context,
         content: e.message.toString(),
+        color: AppColors.warningColor,
       );
     } catch (e) {
       Utils.showSnackBar(
         context: context,
         content: e.toString(),
+        color: AppColors.warningColor,
       );
     }
     return null;
@@ -104,7 +106,14 @@ class AuthServices {
   }
 
   //Log-Out
-  Future<void> logOut() async {
+  Future<void> logOut({
+    required BuildContext context,
+  }) async {
     await _firebaseAuth.signOut();
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      LoginScreen.routeName,
+      (route) => false,
+    );
   }
 }

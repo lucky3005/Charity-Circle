@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class AuthModel {
   final String name;
   final String email;
@@ -14,17 +16,18 @@ class AuthModel {
     required this.type,
     this.uid = "",
   });
-  
-   // Convert Firestore document to model
-  factory AuthModel.fromMap(Map<String, dynamic> map) {
+
+  // Convert Firestore document to model
+  factory AuthModel.fromMap(DocumentSnapshot<Map<String, dynamic>> map) {
     return AuthModel(
-        name: map["name"],
-        email: map["email"],
-        password: map["password"],
-        type: map["type"],
-        uid: map["uid"]);
+      name: map["name"],
+      email: map["email"],
+      password: map["password"],
+      type: map["type"],
+      uid: map["uid"],
+    );
   }
-  
+
   // Convert model to Map (for Firestore)
   Map<String, dynamic> toMap() {
     return {

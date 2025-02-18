@@ -1,13 +1,16 @@
 import 'dart:async';
 
+import 'package:charity_circle/core/colors.dart';
 import 'package:charity_circle/features/auth/screens/login_screen.dart';
 import 'package:charity_circle/features/auth/services/auth_services.dart';
+import 'package:charity_circle/features/charity/screen/home_screen.dart';
 import 'package:charity_circle/features/volunteer/widgets/bottom_nav_bar.dart';
 import 'package:charity_circle/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String routeName = "splash-screen";
@@ -18,6 +21,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  AuthServices authServices = AuthServices();
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
   String? userType;
   @override
   void initState() {
@@ -29,8 +35,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> checkUser() async {
-    AuthServices authServices = AuthServices();
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     try {
       User? user = await authServices.loggedIn();
       if (user == null) {
@@ -45,21 +49,26 @@ class _SplashScreenState extends State<SplashScreen> {
           await firebaseFirestore.collection("Users").doc(user.uid).get();
 
       if (data['email'] == user.email) {
-        data['type'] == 'volunteer'
-            ? Navigator.pushNamedAndRemoveUntil(
-                context,
-                BottomNavBar.routeName,
-                (route) => false,
-              )
-            : Navigator.pushNamed(
-                context,
-                LoginScreen.routeName,
-              );
+        if (data["type"] == "volunteer") {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            BottomNavBar.routeName,
+            (route) => false,
+          );
+        }
+        if (data["type"] == "charity") {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            CharityHomeScreen.routeName,
+            (route) => false,
+          );
+        }
       }
     } catch (e) {
       Utils.showSnackBar(
         context: context,
         content: e.toString(),
+        color: AppColors.warningColor,
       );
     }
   }
