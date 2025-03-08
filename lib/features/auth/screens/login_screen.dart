@@ -5,7 +5,7 @@ import 'package:charity_circle/core/colors.dart';
 import 'package:charity_circle/features/auth/screens/forget_password_screen.dart';
 import 'package:charity_circle/features/auth/screens/signup_screen.dart';
 import 'package:charity_circle/features/auth/services/auth_services.dart';
-import 'package:charity_circle/features/charity/screen/home_screen.dart';
+import 'package:charity_circle/features/charity/widgets/bottom_nav_bar.dart';
 import 'package:charity_circle/features/volunteer/widgets/bottom_nav_bar.dart';
 import 'package:charity_circle/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
           );
           Navigator.pushNamedAndRemoveUntil(
             context,
-            CharityHomeScreen.routeName,
+            BottomNavBarCharity.routeName,
             (route) => false,
           );
         }
@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   constraints: BoxConstraints(
                     maxWidth: 600,
                   ),
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

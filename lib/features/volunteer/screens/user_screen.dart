@@ -42,9 +42,6 @@ class _UserScreenState extends State<UserScreen> {
                       title: "Alert!",
                       content: "Do you want to Log-Out?",
                       onPressed: () {
-                        Constants.name = "";
-                        Constants.email = "";
-                        Constants.type = "";
                         authServices.logOut(context: context);
                       });
                 },

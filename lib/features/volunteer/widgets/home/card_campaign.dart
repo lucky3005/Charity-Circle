@@ -1,5 +1,6 @@
 import 'package:charity_circle/components/elevated_button_custom.dart';
 import 'package:charity_circle/core/colors.dart';
+import 'package:charity_circle/core/images.dart';
 import 'package:flutter/material.dart';
 
 class DonationCampaignCard extends StatelessWidget {
@@ -23,7 +24,6 @@ class DonationCampaignCard extends StatelessWidget {
     double progress = (raisedAmount / goalAmount).clamp(0.0, 1.0);
 
     return Card(
-      
       elevation: 5,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -34,11 +34,33 @@ class DonationCampaignCard extends StatelessWidget {
           // Campaign Image
           ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-            child: Image.asset(
+            child: Image.network(
               imageUrl,
-              height: 180,
+              height: 150,
               width: double.infinity,
               fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            (loadingProgress.expectedTotalBytes ?? 1)
+                        : null,
+                  ),
+                );
+              },
+              errorBuilder:
+                  (BuildContext context, Object error, StackTrace? stackTrace) {
+                return Image.asset(
+                  height: 150,
+                  width: double.infinity,
+                  AppImages.charityImage, // Fallback image
+                  fit: BoxFit.cover,
+                );
+              },
             ),
           ),
 
@@ -114,9 +136,6 @@ class DonationCampaignCard extends StatelessWidget {
           ),
         ],
       ),
-
-
-      
     );
   }
 }

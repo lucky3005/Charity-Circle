@@ -1,7 +1,9 @@
 import 'package:charity_circle/features/auth/screens/forget_password_screen.dart';
 import 'package:charity_circle/features/auth/screens/login_screen.dart';
 import 'package:charity_circle/features/auth/screens/signup_screen.dart';
+import 'package:charity_circle/features/charity/screen/all_campaign.dart';
 import 'package:charity_circle/features/charity/screen/home_screen.dart';
+import 'package:charity_circle/features/charity/widgets/bottom_nav_bar.dart';
 import 'package:charity_circle/features/intro/splash_screen.dart';
 import 'package:charity_circle/features/volunteer/widgets/bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -38,10 +40,16 @@ Route<dynamic> onGenerateRoute(RouteSettings settings) {
         builder: (_) => const BottomNavBar(),
       );
 
-    //Home Screen for Charity
-    case CharityHomeScreen.routeName:
+    //Nav Bar Screen for Charity
+    case BottomNavBarCharity.routeName:
       return MaterialPageRoute(
-        builder: (_) => const CharityHomeScreen(),
+        builder: (_) => const BottomNavBarCharity(),
+      );
+
+    //Add All Campaign Charity
+    case AllCampaign.routeName:
+      return MaterialPageRoute(
+        builder: (_) => const AllCampaign(),
       );
 
     // 404

@@ -1,5 +1,7 @@
+import 'package:charity_circle/core/constants.dart';
 import 'package:charity_circle/core/theme.dart';
 import 'package:charity_circle/features/intro/splash_screen.dart';
+import 'package:charity_circle/provider/user_provider.dart';
 import 'package:charity_circle/routes/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,6 +43,12 @@ class CharityCircle extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: appTheme, // Use the pre-initialized theme instance
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Constants(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
         ),
       ],
       child: Consumer<AppTheme>(

@@ -1,10 +1,12 @@
 import 'package:charity_circle/core/colors.dart';
 import 'package:charity_circle/models/auth_model.dart';
 import 'package:charity_circle/features/auth/screens/login_screen.dart';
+import 'package:charity_circle/provider/user_provider.dart';
 import 'package:charity_circle/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AuthServices {
   //Instances

@@ -3,8 +3,8 @@ import 'package:charity_circle/components/elevated_button_custom.dart';
 import 'package:charity_circle/components/text_form_field_custom.dart';
 import 'package:charity_circle/core/colors.dart';
 import 'package:charity_circle/features/auth/services/auth_services.dart';
+import 'package:charity_circle/features/charity/widgets/bottom_nav_bar.dart';
 import 'package:charity_circle/features/volunteer/widgets/bottom_nav_bar.dart';
-import 'package:charity_circle/features/charity/screen/home_screen.dart';
 import 'package:charity_circle/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,7 +77,7 @@ class _SignupScreenState extends State<SignupScreen> {
             )
           : Navigator.pushNamedAndRemoveUntil(
               context,
-              CharityHomeScreen.routeName,
+              BottomNavBarCharity.routeName,
               (route) => false,
             );
     }
@@ -98,7 +98,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   constraints: BoxConstraints(
                     maxWidth: 600,
                   ),
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

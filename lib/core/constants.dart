@@ -1,5 +1,13 @@
-class Constants {
-  static  String name = "";
-  static  String email = "";
-  static  String type = "";
+import 'package:flutter/material.dart';
+
+class Constants with ChangeNotifier {
+
+  int _allCampaignLength = 0;
+
+  int get allCampaignLength => _allCampaignLength;
+
+  void setAllCampaignLength(int len) {
+    _allCampaignLength = len;
+    notifyListeners();
+  }
 }

@@ -20,11 +20,10 @@ class AuthModel {
   // Convert Firestore document to model
   factory AuthModel.fromMap(DocumentSnapshot<Map<String, dynamic>> map) {
     return AuthModel(
-      name: map["name"],
-      email: map["email"],
-      password: map["password"],
-      type: map["type"],
-      uid: map["uid"],
+      name: map["name"] ?? "",
+      email: map["email"] ?? "",
+      type: map["type"] ?? "",
+      uid: map["uid"] ?? "",
     );
   }
 
